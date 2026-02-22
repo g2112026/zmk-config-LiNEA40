@@ -63,12 +63,20 @@
         irq-gpios = <&xiao_d 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; //MOT-D6
         automouse-layer = <1>;
         snipe-layers = <2>;
-        scroll-layers = <5>;
+        //scroll-layers = <5>;
         //scroll-layers = <4 5 6>;
     };
 };
 
 &trackball_listener {
+    compatible = "zmk,input-listener";
     status = "okay";
     device = <&trackball>;
+    input-processors = <&mouse_runtime_input_processor>;
+
+    /* Layer 5 (ARROW): convert cursor movement to scroll */
+    scroller {
+        layers = <5>;
+        input-processors = <&zip_xy_to_scroll_mapper &scroll_runtime_input_processor>;
+    };
 };
